@@ -14,7 +14,7 @@ export default class EventsTable extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { data: '', greeting: "Blah" };
+    this.state = { data: '' };
 
     // This binding is necessary to make `this` work in the callback    
     this.getMtbEvents = this.getMtbEvents.bind(this);
@@ -23,7 +23,7 @@ export default class EventsTable extends React.Component {
   }
 
   displayEvents(data) {
-    this.setState({ greeting: "Results:", data: data });
+    this.setState({ data: data });
 
   }
 
@@ -44,12 +44,12 @@ export default class EventsTable extends React.Component {
     return (
       <div>
         <div>
-          {<FlatButton label="Default" onClick={this.getMtbEvents} />}
+          {<FlatButton label="Event Results" onClick={this.getMtbEvents} />}
           <FlatButton label="Primary" primary={true} />
           <FlatButton label="Secondary" secondary={true} />
           <FlatButton label="Disabled" disabled={true} />
         </div>
-          {<EventTable data />}
+        {<EventTable data={this.state.data} />}
         <div>
           <h1>{this.state.greeting}</h1>
         </div>
@@ -68,52 +68,49 @@ class EventRow extends React.Component {
     </span>;
 
     return (
-      <tr>
-        <td>{date}</td>
-        <td>{name}</td>
-      </tr>
+      <TableRow>
+        <TableRowColumn>{date}</TableRowColumn>
+        <TableRowColumn>{name}</TableRowColumn>
+      </TableRow>
     );
   }
 }
 
 class EventTable extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = { casperdata: [{ date: "hello", name: "world" }, { date: "hello2", name: "world2" }], data: this.props.data }
+
+
+  }
+
   render() {
     const rows = [];
 
-    alert(this.props)
-    console.log("Data Start")
-    console.log(this.props.data)
-      //   this.state.data.forEach(function (entry) {
-      //     rows.push(
-      //   <EventRow
-      //     date={entry['date']}
-      //     name={entry['name']}
-      //   />
-      // );
-      //  });
+    if (this.props.data) {
+      this.props.data.forEach(function (entry) {
+        console.log(entry['name']);
+        rows.push(
+          <EventRow
+            date={entry['date']}
+            name={entry['title']}
+          />
+        );
+      });
+    }
 
-
-    // this.p
-    // this.props.data.forEach((entry) => {
-    //   rows.push(
-    //     <EventRow
-    //       date={date}
-    //       name={name}
-    //     />
-    //   );
-    // });
 
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>date</th>
-            <th>name</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHeaderColumn>Date</TableHeaderColumn>
+            <TableHeaderColumn>Event Name</TableHeaderColumn>
+          </TableRow>
+        </TableHeader>
+        <TableBody>{rows}</TableBody>
+      </Table>
     );
   }
 }
