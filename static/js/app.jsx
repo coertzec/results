@@ -1,13 +1,14 @@
 import React from "react";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import EventsTable from "./events";
+import Main from "./main";
+
 
 export default class App extends React.Component {
-     render () {
+    render() {
         return (
             <div>
                 <MuiThemeProvider>
-                    <EventsTable name='Caspertest' />
+                    <Main />
                 </MuiThemeProvider>
             </div>
         );
